@@ -1,35 +1,29 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useEffect, useState } from 'react'
 import './App.css'
 
-function App() {
-  const [count, setCount] = useState(0)
+const RANDOM_NUMBER_API = 'https://www.random.org/integers/?num=1&min=1&max=500&col=1&base=10&format=plain&rnd=new'
 
-  return (
-    <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </div>
-  )
+const getRandomNumber = async () => {
+	const res = await fetch(RANDOM_NUMBER_API)
+	const number = await res.text()
+	// devuelve un string Ej: 120\n
+	// + convierte el string a número
+	return +number
+}
+
+function App() {
+	
+	const [number, setNumber] = useState()
+
+	useEffect(() => {
+		getRandomNumber().then(num => setNumber(num))
+	}, [])
+
+	return (
+		<div className="App App-header">
+			<h2>Número Aleatorio {number}</h2>
+		</div>
+	)	
 }
 
 export default App
